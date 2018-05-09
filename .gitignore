@@ -4,6 +4,8 @@
 [Bb]uild/
 [Bb]uilds/
 [Hh]oloToolKit/
+[Hh]oloToolKit-Examples/
+[Hh]oloToolKit-UnitTests/
 Assets/AssetStoreTools*
 
 # Visual Studio cache directory
