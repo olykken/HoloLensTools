@@ -1,0 +1,67 @@
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Windows.Speech;
+
+public class VoiceController : MonoBehaviour
+{ 
+    KeywordRecognizer keywordRecognizer = null;
+    Dictionary<string, System.Action> keywords = new Dictionary<string, System.Action>();
+
+    void Start()
+    {
+        keywords.Add("Play", () =>
+        {
+            // Call the Play method
+            Debug.Log("You just said Play");
+            BroadcastMessage("OnPlay");
+        });
+        keywords.Add("Pause", () =>
+        {
+            // Call the Pause method
+            Debug.Log("You just said Pause");
+            BroadcastMessage("OnPause");
+        });
+        keywords.Add("Stop", () =>
+        {
+            // Call the Stop method
+            Debug.Log("You just said Stop");
+            BroadcastMessage("OnStop");
+        });
+        keywords.Add("Back", () =>
+        {
+            // Call the Back method
+            Debug.Log("You just said Back");
+            BroadcastMessage("OnBack");
+        });
+        keywords.Add("Forward", () =>
+        {
+            // Call the Forward
+            Debug.Log("You just said Forward");
+            BroadcastMessage("OnForward");
+        });
+        keywords.Add("Menu", () =>
+        {
+            // Call the Menu method
+            Debug.Log("You just said Menu");
+            BroadcastMessage("OnMenu");
+        });
+        
+        // Tell the KeywordRecognizer about our keywords.
+        keywordRecognizer = new KeywordRecognizer(keywords.Keys.ToArray());
+
+        // Register a callback for the KeywordRecognizer and start recognizing!
+        keywordRecognizer.OnPhraseRecognized += OnPhraseRecognized;
+        keywordRecognizer.Start();
+    } // end Start
+
+    private void OnPhraseRecognized(PhraseRecognizedEventArgs args)
+    {
+        System.Action keywordAction;
+        if (keywords.TryGetValue(args.text, out keywordAction))
+        {
+            keywordAction.Invoke();
+        }
+    } // end OnPhraseRecognized
+} // end VoiceController
